@@ -21,3 +21,7 @@ To run the application, make sure you installed all the libraries required based
   python app.py
 ```
 
+Deployed application
+
+![](https://github.com/Your_Repository_Name/Your_GIF_Name.gif)
+
