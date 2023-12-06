@@ -23,5 +23,4 @@ To run the application, make sure you installed all the libraries required based
 
 Deployed application
 
-![](https://github.com/Your_Repository_Name/Your_GIF_Name.gif)
-
+![](https://github.com/prudhvirajboddu/ImageCaptionGenerator/blob/master/Deployment.gif)
