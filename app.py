@@ -1,3 +1,5 @@
+#imports installed
+
 import gradio as gr
 import torch
 from PIL import Image
@@ -6,32 +8,43 @@ import numpy as np
 import random
 from torch.autograd import Variable
 import torchvision
+import pickle
 from model import PositionalEncoding,ImageCaptionModel
 
-max_seq_len = 33
-vocab_size = 8360
-import pickle
+max_seq_len = 74
+vocab_size = 17898
+
+
+#Open the encoded index to word and word to index pickle files 
 afile = open('I2W.pkl', 'rb')
 index_to_word = pickle.load(afile)
 afile.close()
+
 bfile = open('W2I.pkl', 'rb')
 word_to_index = pickle.load(bfile)
 bfile.close()
+
+#Adding the tokens
 start_token = word_to_index['<start>']
 end_token = word_to_index['<end>']
 pad_token = word_to_index['<pad>']
 
+#Device to infer the model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#Model Class of the trained model to generate captions
 model = ImageCaptionModel(n_head=16, n_decoder_layer=5, vocab_size=vocab_size, embedding_size=512).to(device)
 model = torch.load('BestModelResnet.pt', map_location=device)
 
-# Define the function to generate captions
 
+#Loading resnet to get the image embedding
 resnet18 = torchvision.models.resnet18(pretrained=True).to('cpu')
 resnet18.eval()
 
 resNet18Layer4 = resnet18._modules.get('layer4').to('cpu')
 
+
+#get the resNet embedding for the image 
 def get_resnet_vector(t_img):
     
     t_img = torch.from_numpy(t_img).float().unsqueeze(0).permute(0,3,1,2)
@@ -53,6 +66,7 @@ def get_resnet_vector(t_img):
     
     h.remove()
     return my_embedding
+
 
 
 def generate_caption(image):
